@@ -1,0 +1,43 @@
+/* This is our team CSS3 file 
+Please make your adjustments on these elements
+and everyone will be able to benefit.
+Note: Not all of these elements have to be used,
+this is just to get us started and some examples.
+
+This is what the top of your HTML document should look like:
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+
+Version test
+*/
+
+
+/* Paragraph settings */
+p {
+	color: darkorchid;
+	font-size: 13px;
+	
+}
+
+/*Heading 1 settings */
+h1 {
+	text-align: center;
+	color: purple;
+	font-size: 20px;
+}
+
+/*Heading 2 settings */
+h2 {
+	text-align: center;
+	color: darkmagenta;
+	font-size: 16px;
+	font-family: serif;
+	
+}
+
+
