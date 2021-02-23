@@ -3,6 +3,7 @@
 		<link rel="stylesheet" href="/suburbanoutfitters/stylesheets/styles.css">
 		<script src="http://clevertree.github.io/zip-lookup/zip-lookup.js" type="text/javascript"></script>
 	</head>
+	
 	<body>
 		<form id="form_create_user", action="/suburbanoutfitters/profile.php" method="get">
 			First name:<br>
