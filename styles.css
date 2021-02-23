@@ -1,10 +1,21 @@
-/*
-This is our team CSS3 file 
+/* This is our team CSS3 file 
 Please make your adjustments on these elements
 and everyone will be able to benefit.
 Note: Not all of these elements have to be used,
 this is just to get us started and some examples.
+
+This is what the top of your HTML document should look like:
+
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/urbanoutfitters/stylesheets/styles.css">
+</head>
+
+
+Version test
 */
+
 
 /* Paragraph settings */
 p {
@@ -17,7 +28,7 @@ p {
 h1 {
 	text-align: center;
 	color: purple;
-	font-size: 20px;
+	font-size: 50px;
 }
 
 /*Heading 2 settings */
@@ -29,4 +40,30 @@ h2 {
 	
 }
 
+/*Login Page */
+#login {
+   display: table;
+   width: 100%;
+}
+#form_login {
+   display: table-cell;
+   text-align: center;
+   vertical-align: middle;
+}
 
+/*Sign Up Page */
+#newuser {
+   display: table;
+   width: 100%;
+}
+#form_newuser {
+   display: table-cell;
+   text-align: center;
+   vertical-align: middle;
+}
+
+/*Create New User */
+#form_create_user {
+	display: table-cell;
+	vertical-align: middle;
+}
