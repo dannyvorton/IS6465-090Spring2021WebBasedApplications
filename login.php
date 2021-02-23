@@ -1,6 +1,6 @@
 <html>
 	<head></head>
-		<title>Urban Outfitters</title>
+		<title>Suburban Outfitters</title>
 		<link rel="stylesheet" href="/suburbanoutfitters/stylesheets/styles.css">
 	<body>
 	<!-- Test code
