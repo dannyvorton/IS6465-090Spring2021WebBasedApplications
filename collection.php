@@ -11,6 +11,6 @@
         <title>Suburban Outfitters Collection</title>
     </head>
     <body>
-    
+        <img src="/IS6465-GroupProject/image/AlloverPrintSwingA-lineDress.jpg"><br><br>
     </body>
 </html>
