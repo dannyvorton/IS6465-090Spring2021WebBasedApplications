@@ -96,6 +96,7 @@ create table inventory (
     store_id varchar(100) not null,
     inv_date date not null,
     quantity int(11) not null,
-    cost decimal(11, 2) not null
+    cost decimal(11, 2) not null,
+    attribute varchar(100)
 )
 ENGINE MyISAM;
