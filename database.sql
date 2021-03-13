@@ -119,7 +119,7 @@ insert into inventory (prod_name, quantity, price, category, images) values ('Bl
 insert into inventory (prod_name, quantity, price, category, images) values ('Open Black Floral Dress', 100, 45, 'dress', 'images/allover-floral-dress1.png');
 insert into inventory (prod_name, quantity, price, category, images) values ('Green Crop Top', 100, 20, 'top', 'images/green-top1.png');
 insert into inventory (prod_name, quantity, price, category, images) values ('Two Tones Patch Jeans', 100, 45, 'bottom', 'images/green-brown-jeans1.png');
-insert into inventory (prod_name, quantity, price, category, images) values ('White Lantern Sleeves Dress', 100 40, 'dress', 'images/white-dress1.png');
+insert into inventory (prod_name, quantity, price, category, images) values ('White Lantern Sleeves Dress', 100, 40, 'dress', 'images/white-dress1.png');
 insert into inventory (prod_name, quantity, price, category, images) values ('Blue Skater Skirt', 100, 25, 'bottom', 'images/blue-skater-skirt1.png');
 insert into inventory (prod_name, quantity, price, category, images) values ('Orange Floral Crop Top', 100, 15, 'top', 'images/orange-top1.png');
 insert into inventory (prod_name, quantity, price, category, images) values ('Swiss Dot White Dress', 100, 55, 'dress', 'images/poka-dot-white-dress1.png');
