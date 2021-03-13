@@ -9,7 +9,7 @@ ENGINE MyISAM;
 
 create table employee (
     emp_id int(11) unsigned auto_increment primary key,
-    store_id varchar(100) not null,
+--    store_id varchar(100) not null,  -- is 'store_id' needed?
     first_name varchar(100) not null,
     last_name varchar(100) not null,
     position varchar(100) not null
@@ -30,10 +30,10 @@ create table customer (
     first_name varchar(100) not null,
     last_name varchar(100) not null,
     email varchar(100) not null,
-    phone_number varchar(100), -- Do we want to require a phone number?
+    phone_number varchar(100),
     address varchar(100) not null,
     username varchar(100) not null,
-    password varchar(100) not null -- Have we already learned about password hashing?
+    password varchar(100) not null
 )
 ENGINE MyISAM;
 
@@ -41,7 +41,7 @@ create table order (
     order_id int(11) unsigned auto_increment primary key,
     emp_id int(11) not null,
     cust_id int(11) not null,
-    store_id varchar(100) not null,
+--    store_id varchar(100) not null,  -- is 'store_id' needed?
     camp_id varchar(100),
     order_date date not null,
     total_price decimal(11, 2) not null
@@ -65,6 +65,7 @@ create table shipping (
 )
 ENGINE MyISAM;
 
+--  is the 'vendor' table required, or is this too much detail for the scope of this project?
 create table vendor (
     vendor_id int(11) unsigned auto_increment primary key;
     vendor_name varchar(100) not null,
@@ -72,6 +73,7 @@ create table vendor (
 )
 ENGINE MyISAM;
 
+--  is the 'product' table redundant to the 'inventory' table?
 create table product (
     prod_id int(11) unsigned auto_increment primary key,
     vendor_id int(11) not null,
@@ -91,14 +93,14 @@ ENGINE MyISAM;
 
 create table inventory (
     inv_id int(11) unsigned auto_increment primary key,
-    prod_name int(11) not null,
---    vendor_id int(11) not null,
+    prod_name int(11) not null, -- changed 'prod_id' to 'prod_name' as the 'inv_id' might could be the 'prod_id'
+--    vendor_id int(11) not null,  --  are the following three fields needed, or is this too much detail for the scope of this project?
 --    store_id varchar(100) not null,
 --    inv_date date not null,
     quantity int(11) not null,
     price decimal(11, 2) not null,
-    category varchar(100),
-    images varchar(100)
+    category varchar(100),  -- changed name from 'attribute' to 'category'
+    images varchar(100)  -- added this column to link to image
 )
 ENGINE MyISAM;
 
