@@ -19,7 +19,7 @@ for ($j=0; $j<$rows; ++$j) {
 echo <<<_END
 <pre>
 	SKU: $row[inv_id]
-    Product Name: $row[product name]
+    Product Name: $row[prod_name]
     Quantity: $row[quantity]
     Price: $row[price]
     Category: $row[category]
