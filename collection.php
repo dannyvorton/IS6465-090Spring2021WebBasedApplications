@@ -1,3 +1,45 @@
+<?php
+
+require_once 'login-page.php';
+
+$conn = new mysqli ($hn, $un, $pw, $db);
+if($conn->connect_error) die($conn->connect_error);
+
+$query = "SELECT * from inventory";
+
+$result = $conn->query($query);
+if(!$result) die ($conn->error);
+
+$rows = $result->num_rows;
+
+for ($j=0; $j<$rows; ++$j) {
+//    $result->data_seek($j);
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+
+echo <<<_END
+<pre>
+	SKU: $row[inv_id]
+    Product Name: $row[product name]
+    Quantity: $row[quantity]
+    Price: $row[price]
+    Category: $row[category]
+    Images: $row[images]
+</pre>
+
+    <form action='deleterecord.php' method='post'>
+        <input type='hidden' name='delete' value='yes'>
+        <input type='hidden' name='inv_id' value='$row[inv_id]'>
+        <input type='submit' value='DELETE RECORD'>
+    </form>
+
+_END;
+}
+
+$conn->close();
+
+?>
+
+<!-- code from mid-term assignment
 <html>
 	<head>
 		<title>Suburban Outfitters | SHOP ALL</title>
@@ -9,7 +51,6 @@
 	
 	<body id="collection-page">
 	
-	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -54,7 +95,6 @@
 			</div> 
 		</nav>
 		
-		<!------ Categories -------->
 		<div class="container-fluid">
 			<div class="categories">
 				<div class="small-container">
@@ -76,7 +116,6 @@
 			</div>
 		</div>
 		
-		<!------ All Products ----->
 		<div class="container-fluid">
 			<div class="small-container-fluid">
 				<h2 class="title">SHOP ALL</h2>
@@ -310,7 +349,6 @@
 			</div>
 		</div>
 		
-		<!------ Promotion ------->
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
@@ -322,7 +360,6 @@
 			</div>
 		</div>
 		
-		<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">
@@ -352,3 +389,4 @@
 		</div>
     </body>
 </html>
+-->
