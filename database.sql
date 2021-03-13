@@ -93,7 +93,7 @@ ENGINE MyISAM;
 
 create table inventory (
     inv_id int(11) unsigned auto_increment primary key,
-    prod_name int(11) not null, -- changed 'prod_id' to 'prod_name' as the 'inv_id' might could be the 'prod_id'
+    prod_name varchar(100) not null, -- changed 'prod_id' to 'prod_name' as the 'inv_id' might could be the 'prod_id'
 --    vendor_id int(11) not null,  --  are the following three fields needed, or is this too much detail for the scope of this project?
 --    store_id varchar(100) not null,
 --    inv_date date not null,
