@@ -1,7 +1,7 @@
 create table payment (
     pmt_id int(11) unsigned auto_increment primary key,
     order_id int(11) unsigned not null,
-    cust_id int(11) insigned not null,
+    cust_id int(11) unsigned not null,
     credit_card varchar(100) not null,
     payment_date date not null
 )
