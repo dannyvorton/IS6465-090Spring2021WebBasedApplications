@@ -37,7 +37,7 @@ create table customer (
 )
 ENGINE MyISAM;
 
-create table order (
+create table orders (
     order_id int(11) unsigned auto_increment primary key,
     emp_id int(11) not null,
     cust_id int(11) not null,
