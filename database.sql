@@ -67,7 +67,7 @@ ENGINE MyISAM;
 
 --  is the 'vendor' table required, or is this too much detail for the scope of this project?
 create table vendor (
-    vendor_id int(11) unsigned auto_increment primary key;
+    vendor_id int(11) unsigned auto_increment primary key,
     vendor_name varchar(100) not null,
     vendor_address varchar(100) not null
 )
