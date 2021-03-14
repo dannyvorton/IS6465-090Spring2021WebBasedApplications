@@ -82,7 +82,7 @@ create table product (
 )
 ENGINE MyISAM;
 
-create table return (
+create table returns (
     return_id int(11) unsigned auto_increment primary key,
     order_id int(11) not null,
     inv_id int(11) not null,
