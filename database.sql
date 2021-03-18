@@ -58,6 +58,27 @@ create table campaign (
 )
 ENGINE MyISAM;
 
+insert into campaign (product_id, discount, details, start_date, end_date) values (1, .1, 'St. Paticks Day Sale 21', '2021-03-17', '2021-03-17');
+insert into campaign (product_id, discount, details, start_date, end_date) values (2, .1, 'Presidents Day Sale 21', '2021-02-15', '2021-02-15');
+insert into campaign (product_id, discount, details, start_date, end_date) values (3, .1, 'Valentines Day Sale 21', '2021-02-14', '2021-02-14');
+insert into campaign (product_id, discount, details, start_date, end_date) values (4, .1, 'MLK Day Sale 21', '2021-01-18', '2021-01-18');
+insert into campaign (product_id, discount, details, start_date, end_date) values (5, .15, 'New Years Sale 21', '2020-12-31', '2021-01-01');
+insert into campaign (product_id, discount, details, start_date, end_date) values (6, .15, 'Christmas Sale 20', '2020-12-20', '2020-12-25');
+insert into campaign (product_id, discount, details, start_date, end_date) values (7, .2, 'Black Friday 20', '2020-11-27', '2020-11-27');
+insert into campaign (product_id, discount, details, start_date, end_date) values (8, .1, 'Veterans Day Sale 20', '2020-11-11', '2020-11-11');
+insert into campaign (product_id, discount, details, start_date, end_date) values (9, .1, 'Halloween Day Sale 20', '2020-10-31', '2020-10-31');
+insert into campaign (product_id, discount, details, start_date, end_date) values (10, .1, 'Columbus Day Sale 20', '2020-10-12', '2020-10-12');
+insert into campaign (product_id, discount, details, start_date, end_date) values (11, .1, 'April Fools Day Sale 21', '2021-04-01', '2021-04-01');
+insert into campaign (product_id, discount, details, start_date, end_date) values (12, .1, 'Tax Day Sale 21', '2021-04-15', '2021-04-15');
+insert into campaign (product_id, discount, details, start_date, end_date) values (13, .1, 'Earth Day Sale 21', '2021-04-22', '2021-04-22');
+insert into campaign (product_id, discount, details, start_date, end_date) values (14, .15, 'Mothers Day Sale 21', '2021-05-09', '2021-05-09');
+insert into campaign (product_id, discount, details, start_date, end_date) values (15, .1, 'Memorial Day Sale 21', '2021-05-31', '2021-05-31');
+insert into campaign (product_id, discount, details, start_date, end_date) values (16, .1, 'Fathers Day Sale 21', '2021-06-20', '2021-06-20');
+insert into campaign (product_id, discount, details, start_date, end_date) values (17, .1, 'Independence Day Sale 21', '2021-07-04', '2021-07-04');
+insert into campaign (product_id, discount, details, start_date, end_date) values (18, .1, 'Labor Day Sale 21', '2021-09-06', '2021-09-06');
+insert into campaign (product_id, discount, details, start_date, end_date) values (19, .15, 'Columbus Day Sale 21', '2021-10-11', '2021-10-11');
+insert into campaign (product_id, discount, details, start_date, end_date) values (20, .1, 'Halloween Day Sale 21', '2021-10-31', '2021-10-31');
+
 create table shipping (
     ship_id int(11) unsigned auto_increment primary key,
     ship_date date not null,

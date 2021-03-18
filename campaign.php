@@ -73,7 +73,7 @@ require_once 'login.php';
 $conn = new mysqli ($hn, $un, $pw, $db);
 if($conn->connect_error) die($conn->connect_error);
 
-$query = "SELECT * from campaign";
+$query = "SELECT * from campaign where end_date >= current_date";
 
 $result = $conn->query($query);
 if(!$result) die ($conn->error);
