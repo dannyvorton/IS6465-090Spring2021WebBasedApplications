@@ -51,6 +51,8 @@ ENGINE MyISAM;
 create table campaign (
     camp_id int(11) unsigned auto_increment primary key,
     product_id int(11) not null,
+    discount decimal(11, 2) not null,
+    details varchar(100) not null,
     start_date date not null,
     end_date date not null
 )

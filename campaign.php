@@ -135,7 +135,7 @@ $conn->close();
         </form>
 </div>
 
-<!-- code to update database -->
+<!-- update database -->
 
 <?php
 
