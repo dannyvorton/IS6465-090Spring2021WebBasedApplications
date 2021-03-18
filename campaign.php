@@ -7,7 +7,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="home-page">
+	<body id="campaign">
 	
 	<!------- Nav Bar ----------->
 		<nav>
@@ -56,6 +56,16 @@
 
 <!-- view campaign -->
 
+	<div class="tab">
+		<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
+		<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
+		<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
+		<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
+		<button class="tablinks"><a href="#" style="color: white;">Customers</a></button>
+	</div>
+	<br>
+	<br>
+
 <?php
 
 require_once 'login.php';
@@ -75,20 +85,18 @@ for ($j=0; $j<$rows; ++$j) {
     $row = $result->fetch_array(MYSQLI_ASSOC);
 
 echo <<<_END
-<pre>
+
     Product ID: $row[product_id]
     Discount: $row[discount]
     Details: $row[details]
     Start Date: $row[start_date]
     End Date: $row[end_date]
-</pre>
 
     <form action='campaign.php' method='post'>
         <input type='hidden' name='delete' value='yes'>
         <input type='hidden' name='product_id' value='$row[product_id]'>
         <input type='submit' value='Delete Campaign'>
     </form>
-
 _END;
 }
 
@@ -122,18 +130,26 @@ $conn->close();
 
 <!-- add campaign -->
 
-<div>
-<form method='post' action='campaign.php'>
-            <pre>
-                Product ID: <input type='text' name='product_id'>
-                Discount: <input type='text' name='discount'>
-                Details: <input type='text' name='details'>
-                Start Date: <input type='date' name='start_date'>
-                End Date: <input type='date' name='end_date'>
-                <input type='submit' value='Add Campaign'>
-            </pre>
-        </form>
-</div>
+	<div class="campaign">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-8">
+					<h2>New Campaign</h2>
+					<div class="form-container">
+						<form method='post' action='campaign.php'>
+							Product ID: <input type='text' name='product_id'><br>
+							Discount: <input type='text' name='discount'><br>
+							Details: <input type='text' name='details'><br>
+							Start Date: <input type='date' name='start_date'><br>
+							End Date: <input type='date' name='end_date'><br>
+							<br>
+							<a href="checkout-page.php" class="btn" style="margin-left: 2%; width: 90%; margin-top: 10px;">Start Campaign</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 <!-- update database -->
 
@@ -160,7 +176,11 @@ if(isset($_POST['product_id'])) {
 $conn->close();
 
 ?>
-
+<br>
+<br>
+<br>
+<br>
+<br>
 		<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
