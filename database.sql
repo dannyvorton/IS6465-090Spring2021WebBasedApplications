@@ -1,7 +1,7 @@
 create table payment (
     pmt_id int(11) unsigned auto_increment primary key,
     order_id int(11) unsigned not null,
-    cust_id int(11) insigned not null,
+    cust_id int(11) unsigned not null,
     credit_card varchar(100) not null,
     payment_date date not null
 )
@@ -37,7 +37,7 @@ create table customer (
 )
 ENGINE MyISAM;
 
-create table order (
+create table orders (
     order_id int(11) unsigned auto_increment primary key,
     emp_id int(11) not null,
     cust_id int(11) not null,
@@ -69,7 +69,7 @@ ENGINE MyISAM;
 
 --  is the 'vendor' table required, or is this too much detail for the scope of this project?
 create table vendor (
-    vendor_id int(11) unsigned auto_increment primary key;
+    vendor_id int(11) unsigned auto_increment primary key,
     vendor_name varchar(100) not null,
     vendor_address varchar(100) not null
 )
@@ -84,7 +84,7 @@ create table product (
 )
 ENGINE MyISAM;
 
-create table return (
+create table returns (
     return_id int(11) unsigned auto_increment primary key,
     order_id int(11) not null,
     inv_id int(11) not null,
