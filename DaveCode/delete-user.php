@@ -1,5 +1,7 @@
 <?php
 
+$page_roles = array('admin');
+
 require_once 'login.php';
 require_once 'check-session.php';
 
@@ -8,9 +10,9 @@ if($conn->connect_error) die($conn->connect_error);
 
 if(isset($_POST['delete']))
 {
-	$emp_id = $_POST['emp_id'];
+	$emp_id = $_POST['username'];
 
-	$query = "DELETE FROM employee WHERE emp_id='$emp_id' ";
+	$query = "DELETE FROM user WHERE username='$username' ";
 	
 	$result = $conn->query($query); 
 	if(!$result) die($conn->error);

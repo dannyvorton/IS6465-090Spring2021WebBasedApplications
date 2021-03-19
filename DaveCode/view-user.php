@@ -6,6 +6,7 @@
 </html>
 
 <?php
+$page_roles = array('admin');
 
 require_once 'login.php';
 require_once 'check-session.php';

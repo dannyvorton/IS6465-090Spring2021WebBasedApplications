@@ -22,12 +22,13 @@ class User{
 			
 		$rows = $result->num_rows;		
 		
+		$roles = Array();
 		for($i=0; $i<$rows; $i++){
 			$row = $result->fetch_array(MYSQLI_ASSOC);
-			$role = $row['role'];
-			array_push($this->roles, $role);  
+			$roles[] = $row['role'];
+			  
 		}				
-		
+		$this->roles = $roles;
 	}
 
 	function getRoles(){

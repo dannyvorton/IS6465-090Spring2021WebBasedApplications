@@ -15,8 +15,10 @@
 
 
 <?php
+$page_roles = array('admin');
 
 require_once 'login.php';
+require_once 'check-session.php';
 
 $conn = new mysqli($hn, $un, $pw, $db);
 if ($conn->connect_error) die($conn->connect_error);
