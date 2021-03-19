@@ -1,45 +1,3 @@
-<?php
-
-require_once 'login-page.php';
-
-$conn = new mysqli ($hn, $un, $pw, $db);
-if($conn->connect_error) die($conn->connect_error);
-
-$query = "SELECT * from inventory where category = 'top'";
-
-$result = $conn->query($query);
-if(!$result) die ($conn->error);
-
-$rows = $result->num_rows;
-
-for ($j=0; $j<$rows; ++$j) {
-//    $result->data_seek($j);
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-
-echo <<<_END
-<pre>
-	SKU: $row[inv_id]
-    Product Name: $row[prod_name]
-    Quantity: $row[quantity]
-    Price: $row[price]
-    Category: $row[category]
-    Images: $row[images]
-</pre>
-
-    <form action='deleterecord.php' method='post'>
-        <input type='hidden' name='delete' value='yes'>
-        <input type='hidden' name='inv_id' value='$row[inv_id]'>
-        <input type='submit' value='DELETE RECORD'>
-    </form>
-
-_END;
-}
-
-$conn->close();
-
-?>
-
-<!-- code from mid-term assignment
 <!DOCTYPE html>
 <html>
     <head>
@@ -52,6 +10,7 @@ $conn->close();
 	
 	<body id="collection-top">
 	
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -96,6 +55,7 @@ $conn->close();
 			</div> 
 		</nav>
 		
+		<!------ Categories -------->
 		<div class="container-fluid">
 			<div class="categories">
 				<div class="small-container">
@@ -117,89 +77,43 @@ $conn->close();
 			</div>
 		</div>
 		
+		<!------ Tops ----->
 		<div class="container-fluid">
 			<div class="small-container-fluid">
 				<h2 class="title">SHOP TOPS</h2>
 				<div class="row">
-					<div class="col-sm-4">
-						<a href="#"><img src="images/orange-top1.png"></a>
-						<h4>Orange Floral Crop Top</h4>
-						<p>$15.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/fringe-top1.png"></a>
-						<h4>Bell Sleeves Fringe Crop Top</h4>
-						<p>$30.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/tie-shoulder-croptop1.png"></a>
-						<h4>Open-Shoulder Crop Top</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-cardigan1.png"></a>
-						<h4>White Crop Cardigan</h4>
-						<p>$20.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/brown-plaid-buttonup1.png"></a>
-						<h4>Brown Plaid Button Up</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/black-leather-top1.png"></a>
-						<h4>Black Leather Top</h4>
-						<p>$15.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/green-top1.png"></a>
-						<h4>Green Crop Top</h4>
-						<p>$20.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/black-sweater1.png"></a>
-						<h4>Black Argyle Cardigan</h4>
-						<p>$35.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/sweater1.png"></a>
-						<h4>Letter Pullover</h4>
-						<p>$39.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/yellow-vneck-top1.png"></a>
-						<h4>Yellow V-Neck Top</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-chaint-sweater1.png"></a>
-						<h4>White Chain Sweater</h4>
-						<p>$20.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/truck-tshirt1.png"></a>
-						<h4>Truck Print Oversized T-Shirt</h4>
-						<p>$15.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/front-tie-top1.png"></a>
-						<h4>Green Self-tie Crop Top</h4>
-						<p>$15.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/satin-top1.png"></a>
-						<h4>Blue Lace Up Back Satin Top</h4>
-						<p>$19.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-top1.png"></a>
-						<h4>White Lace Up Back Top</h4>
-						<p>$25.00</p>
-					</div>
+					<?php
+						require_once 'login.php';
+						
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+						
+						$query = "SELECT * FROM product WHERE prodType = 'Top'";
+						
+						$result = $conn->query($query);
+						if(!$result) die($conn->error);
+						
+						$rows = $result->num_rows;
+
+						for($j = 0; $j < $rows; $j++)
+						{
+							$row = $result -> fetch_array(MYSQLI_ASSOC);
+						
+echo <<<_END
+							<div class="col-sm-4">
+								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
+								<h4>$row[prodName]</h4>
+								<p>$$row[price]</p>
+							</div>
+_END;
+						}
+						$conn->close();
+					?>
 				</div>
 			</div>
 		</div>
 		
+		<!------ Promotion ------->
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
@@ -211,6 +125,7 @@ $conn->close();
 			</div>
 		</div>
 		
+		<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">
@@ -240,4 +155,3 @@ $conn->close();
 		</div>
     </body>
 </html>
--->

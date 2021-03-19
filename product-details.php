@@ -1,13 +1,16 @@
+<?php
+session_start();
+?>
 <html>
 	<head>
-		<title>Suburban Outfitters</title>
+		<title>Suburban Outfitters Details</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="home-page">
+	<body id="product-detail">
 	
 	<!------- Nav Bar ----------->
 		<nav>
@@ -53,112 +56,101 @@
 				</form> 
 			</div> 
 		</nav>
+		
+		<!------ Product Detail ------->
+		<div class="container-fluid">
+			<div class="small-container-fluid product">
+				<div class="row">
+					<?php
+						require_once 'login.php';
+
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+
+						if(isset($_GET['prodID'])) {
 	
-		<!-------- Collage Image --------->
-		<div class="container-fluid">
-			<img src="images/header-collage.png" alt="frontpage-img" style="width: 100%;">
+							$prodID = $_GET['prodID'];
+	
+							$query = "SELECT * FROM product WHERE prodID=$prodID ";
+	
+							$result = $conn->query($query); 
+							if(!$result) die($conn->error);
+
+							$rows = $result->num_rows;
+	
+							for($j=0; $j<$rows; $j++)
+							{
+								$row = $result->fetch_array(MYSQLI_ASSOC);
+						
+echo <<<_END
+	<div class="col-sm-8">
+		<p style="color: gray;"> Home / $row[prodType] / $row[prodName]</p>
+		<img src="$row[imagepath1]">
+		<div class="small-img-row">
+			<img src="$row[imagepath2]">
+		</div>
+		<div class="small-img-row">
+			<img src="$row[imagepath3]">
+		</div>
+	</div>
+	<div class="col-sm-8">
+		<h1>$row[prodName]</h1>
+		<h4>$$row[price]</h4>
+		<select>
+			<option>Select Size</option>
+			<option>Small</option>
+			<option>Medium</option>
+			<option>Large</option>
+			<option>X-Large</option>
+			<option>XX-Large</option>
+		</select>
+		<input type="number" value ="1">
+		<a href="cart-page.php?prodID=$row[prodID]" class="btn" name="add-to-cart">Add to Cart</a>
+		</div>
+_END;
+							}
+						}
+						$conn->close();
+					?>
+				</div>
+			</div>
 		</div>
 		
-		<!------ Categories -------->
+		<!------ For You ------>
 		<div class="container-fluid">
-			<div class="categories">
-				<div class="small-container">
-					<div class="row">
-						<div class="col-sm-3">
-							<h2 class="categories-name">DRESSES</h2>
-							<a href="collection-dress.php"><img src="images/floral-dress1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">TOPS</h2>
-							<a href="collection-top.php"><img src="images/blue-collar-top1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">BOTTOMS</h2>
-							<a href="collection-bottom.php"><img src="images/pattern-skirt1.png"></a>
-						</div>
+			<div class="small-container-fluid">
+				<h2 class="title">RECOMMENDED FOR YOU</h2>
+				<div class="row">
+					<div class="col-sm-2">
+						<a href="#"><img src="images/green-top1.png"></a>
+						<h4>Green Crop Top</h4>
+						<p>$20.00</p>
 					</div>
-				</div>
-			</div>
-		</div>
-		
-		<!------ Featured Products ----->
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">FEATURED PRODUCTS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'Featured'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
-
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-4">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
-_END;
-						}
-					?>
-				</div>
-			</div>
-		</div>
-		
-		<!------ New Arrivals ------>
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">NEW ARRIVALS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'New Arrival'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
-
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-2">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
-_END;
-						}
-					?>
-				</div>
-			</div>
-		</div>
-		
-		<!------ Promotion ------->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-6">
-					<img src="images/discount-banner.png">
-				</div>
-				<div class="col-sm-6">
-					<a href="collection-sale.php"><img src="images/sale-banner.png"></a>
+					<div class="col-sm-2">
+						<a href="#"><img src="images/green-brown-jeans1.png"></a>
+						<h4>Two Tones Patch Jeans</h4>
+						<p>$45.00</p>
+					</div>
+					<div class="col-sm-2">
+						<a href="#"><img src="images/butterfly-jeans1.png"></a>
+						<h4>Butterfly Patch Jeans</h4>
+						<p>$35.00</p>
+					</div>
+					<div class="col-sm-2">
+						<a href="#"><img src="images/black-sweater1.png"></a>
+						<h4>Black Argyle Cardigan</h4>
+						<p>$35.00</p>
+					</div>
+					<div class="col-sm-2">
+						<a href="#"><img src="images/sweater1.png"></a>
+						<h4>Letter Pullover</h4>
+						<p>$39.00</p>
+					</div>
+					<div class="col-sm-2">
+						<a href="#"><img src="images/zebra-pants1.png"></a>
+						<h4>Zebra Pattern Pants</h4>
+						<p>$35.00</p>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,45 +1,3 @@
-<?php
-
-require_once 'login-page.php';
-
-$conn = new mysqli ($hn, $un, $pw, $db);
-if($conn->connect_error) die($conn->connect_error);
-
-$query = "SELECT * from inventory where category = 'bottom'";
-
-$result = $conn->query($query);
-if(!$result) die ($conn->error);
-
-$rows = $result->num_rows;
-
-for ($j=0; $j<$rows; ++$j) {
-//    $result->data_seek($j);
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-
-echo <<<_END
-<pre>
-	SKU: $row[inv_id]
-    Product Name: $row[prod_name]
-    Quantity: $row[quantity]
-    Price: $row[price]
-    Category: $row[category]
-    Images: $row[images]
-</pre>
-
-    <form action='deleterecord.php' method='post'>
-        <input type='hidden' name='delete' value='yes'>
-        <input type='hidden' name='inv_id' value='$row[inv_id]'>
-        <input type='submit' value='DELETE RECORD'>
-    </form>
-
-_END;
-}
-
-$conn->close();
-
-?>
-
-<!-- code from mid-term
 <html>
     <head>
 		<title>Suburban Outfitters | SHOP BOTTOMS</title>
@@ -51,6 +9,7 @@ $conn->close();
 	
 	<body id="collection-bottom">
 	
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -95,6 +54,7 @@ $conn->close();
 			</div> 
 		</nav>
 		
+		<!------ Categories -------->
 		<div class="container-fluid">
 			<div class="categories">
 				<div class="small-container">
@@ -116,89 +76,43 @@ $conn->close();
 			</div>
 		</div>
 		
+		<!------ Bottoms ----->
 		<div class="container-fluid">
 			<div class="small-container-fluid">
 				<h2 class="title">SHOP BOTTOMS</h2>
 				<div class="row">
-					<div class="col-sm-4">
-						<a href="#"><img src="images/black-white-jeans1.png"></a>
-						<h4>Black & White Jeans</h4>
-						<p>$45.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/two-tone-shorts1.png"></a>
-						<h4>Two Tones Shorts</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/brown-chain-skirt1.png"></a>
-						<h4>Brown Chains Skater Skirt</h4>
-						<p>$30.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/zebra-pants1.png"></a>
-						<h4>Zebra Pattern Pants</h4>
-						<p>$35.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-sweats1.png"></a>
-						<h4>White Drawstring Sweatpants</h4>
-						<p>$20.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/purple-shorts1.png"></a>
-						<h4>Purple Shorts</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/black-ripped-jeans1.png"></a>
-						<h4>Black Distressed Jeans</h4>
-						<p>$45.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/blue-skater-skirt1.png"></a>
-						<h4>Blue Skater Skirt</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/green-brown-jeans1.png"></a>
-						<h4>Two Tones Patch Jeans</h4>
-						<p>$45.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/butterfly-jeans1.png"></a>
-						<h4>Butterfly Patch Jeans</h4>
-						<p>$35.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-flare-pants1.png"></a>
-						<h4>White Flare Pants</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/flap-pocket-cord-pants1.png"></a>
-						<h4>Flap Pocket Cord Pants</h4>
-						<p>$30.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="strawberryshort-product.php"><img src="images/strawberry-shorts1.png"></a>
-						<h4>Strawberry Shorts</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/black-white-sweats1.png"></a>
-						<h4>Two Tone Sweatpants</h4>
-						<p>$15.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/blue-floral-skirt.png"></a>
-						<h4>Blue Floral Skirt</h4>
-						<p>$20.00</p>
-					</div>
+					<?php
+						require_once 'login.php';
+						
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+						
+						$query = "SELECT * FROM product WHERE prodType = 'Bottom'";
+						
+						$result = $conn->query($query);
+						if(!$result) die($conn->error);
+						
+						$rows = $result->num_rows;
+
+						for($j = 0; $j < $rows; $j++)
+						{
+							$row = $result -> fetch_array(MYSQLI_ASSOC);
+						
+echo <<<_END
+							<div class="col-sm-4">
+								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
+								<h4>$row[prodName]</h4>
+								<p>$$row[price]</p>
+							</div>
+_END;
+						}
+						$conn->close();
+					?>
 				</div>
 			</div>
 		</div>
 		
+		<!------ Promotion ------->
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
@@ -210,6 +124,7 @@ $conn->close();
 			</div>
 		</div>
 		
+		<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">
@@ -239,4 +154,3 @@ $conn->close();
 		</div>
     </body>
 </html>
--->

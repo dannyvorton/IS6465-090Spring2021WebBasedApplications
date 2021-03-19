@@ -1,13 +1,13 @@
 <html>
 	<head>
-		<title>Suburban Outfitters</title>
+		<title>Suburban Outfitters Details</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="home-page">
+	<body id="inventory-detail">
 	
 	<!------- Nav Bar ----------->
 		<nav>
@@ -53,112 +53,90 @@
 				</form> 
 			</div> 
 		</nav>
+		
+		<!------ Product Detail ------->
+		<div class="container-fluid">
+			<div class="small-container-fluid product">
+				<div class="row">
+					<?php
+						require_once 'login.php';
+
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+
+						if(isset($_GET['prodID'])) {
 	
-		<!-------- Collage Image --------->
-		<div class="container-fluid">
-			<img src="images/header-collage.png" alt="frontpage-img" style="width: 100%;">
-		</div>
-		
-		<!------ Categories -------->
-		<div class="container-fluid">
-			<div class="categories">
-				<div class="small-container">
-					<div class="row">
-						<div class="col-sm-3">
-							<h2 class="categories-name">DRESSES</h2>
-							<a href="collection-dress.php"><img src="images/floral-dress1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">TOPS</h2>
-							<a href="collection-top.php"><img src="images/blue-collar-top1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">BOTTOMS</h2>
-							<a href="collection-bottom.php"><img src="images/pattern-skirt1.png"></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<!------ Featured Products ----->
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">FEATURED PRODUCTS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'Featured'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
+							$prodID = $_GET['prodID'];
+	
+							$query = "SELECT product.prodID, product.prodName, product.price, product.prodType, product.imagepath1, product.imagepath2, product.imagepath3, inventory.prodID, inventory.quantity, inventory.date_ordered, inventory.cost FROM product, inventory WHERE product.prodID = inventory.prodID AND product.prodID=$prodID GROUP BY product.prodName ";
+	
+							$result = $conn->query($query); 
+							if(!$result) die($conn->error);
 
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
+							$rows = $result->num_rows;
+	
+							for($j=0; $j<$rows; $j++)
+							{
+								$row = $result->fetch_array(MYSQLI_ASSOC);
 echo <<<_END
-							<div class="col-sm-4">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
+						<div class="col-sm-2" style="margin-left: 350px;">
+							<p style="color: gray; font-size: 15px;"> Home / $row[prodType] / $row[prodName]</p>
+							<img src="$row[imagepath1]">
+							<div class="small-img-row">
+								<img src="$row[imagepath2]">
 							</div>
-_END;
-						}
-					?>
-				</div>
-			</div>
-		</div>
+							<div class="small-img-row">
+								<img src="$row[imagepath3]">
+							</div>
+						</div>
+						<div class="form-container" style="margin-top: 35px;">
+							<form method='post' action='inventory-update.php'>
+								Product ID: <input type='text' name='prodID' value='$row[prodID]' style='font-size: 15px;'>
+								Product Name: <input type='text' name='prodName' value='$row[prodName]' style='font-size: 15px;'>
+								Product Price: <input type='text' name='price' value='$row[price]' style='font-size: 15px;'>
+								Product Quantity: <input type='text' name='quantity' value='$row[quantity]' style='font-size: 15px;'>
+								Product Type: <input type='text' name='prodType' value='$row[prodType]' style='font-size: 15px;'>
+								Date Ordered: <input type='date' name='date_ordered' value='$row[date_ordered]' style='font-size: 15px;'>
+								Cost: <input type='text' name='cost' value='$row[cost]' style='font-size: 15px;'>
+								Image 1: <input type='text' name='imagepath1' value='$row[imagepath1]' style='font-size: 13px;'>
+								Image 2: <input type='text' name='imagepath2' value='$row[imagepath2]' style='font-size: 13px;'>
+								Image 3: <input type='text' name='imagepath3' value='$row[imagepath3]' style='font-size: 13px;'>
+								
+								<input type='hidden' name='update' value='yes'>
+								<input type='hidden' name='prodID' value='$row[prodID]'>
+								<input type='submit' value='Update Product'>	
+							</form>
+						</div>
 		
-		<!------ New Arrivals ------>
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">NEW ARRIVALS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'New Arrival'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
-
-						for($j = 0; $j < $rows; $j++)
+		
+_END;
+							}
+						}
+						if(isset($_POST['update']))
 						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-2">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
-_END;
+							$prodName = $_POST['prodName'];
+							$price = $_POST['price'];
+							$quantity = $_POST['quantity'];
+							$prodType = $_POST['prodType'];
+							$date_ordered = $_POST['date_ordered'];
+							$cost = $_POST['cost'];
+							$imagepath1 = $_POST['imagepath1'];
+							$imagepath2 = $_POST['imagepath2'];
+							$imagepath3 = $_POST['imagepath3'];
+							
+							$query1 = "UPDATE product SET prodName='$prodName', price='$price', prodType='$prodType', imagepath1='$imagepath1', imagepath2='$imagepath2', imagepath3='$imagepath3' WHERE prodID=$prodID";
+							$query2 = "UPDATE inventory SET quantity='$quantity', cost='$cost', date_ordered='$date_ordered', imagepath='$imagepath1' WHERE prodID=$prodID";
+							
+							$result1 = $conn->query($query1); 
+							if(!$result1) die($conn->error);
+							
+							$result2 = $conn->query($query2); 
+							if(!$result2) die($conn->error);
+							
 						}
+						
+						$conn->close();
 					?>
-				</div>
-			</div>
-		</div>
-		
-		<!------ Promotion ------->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-6">
-					<img src="images/discount-banner.png">
-				</div>
-				<div class="col-sm-6">
-					<a href="collection-sale.php"><img src="images/sale-banner.png"></a>
 				</div>
 			</div>
 		</div>

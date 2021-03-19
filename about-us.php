@@ -53,116 +53,29 @@
 				</form> 
 			</div> 
 		</nav>
-	
-		<!-------- Collage Image --------->
-		<div class="container-fluid">
-			<img src="images/header-collage.png" alt="frontpage-img" style="width: 100%;">
-		</div>
 		
-		<!------ Categories -------->
-		<div class="container-fluid">
-			<div class="categories">
-				<div class="small-container">
-					<div class="row">
-						<div class="col-sm-3">
-							<h2 class="categories-name">DRESSES</h2>
-							<a href="collection-dress.php"><img src="images/floral-dress1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">TOPS</h2>
-							<a href="collection-top.php"><img src="images/blue-collar-top1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">BOTTOMS</h2>
-							<a href="collection-bottom.php"><img src="images/pattern-skirt1.png"></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<h2>ABOUT OUR TEAM</h2>
+		<p style="text-align: center;">This webpage was made by Amelia Le, Dave Hyde, and Dan Orton.</p>
+		<p style="text-align: center;">Suburban Outfitters was made for IS 6465 class project. </p><br>
 		
-		<!------ Featured Products ----->
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">FEATURED PRODUCTS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'Featured'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
-
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-4">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
-_END;
-						}
-					?>
-				</div>
-			</div>
-		</div>
-		
-		<!------ New Arrivals ------>
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">NEW ARRIVALS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'New Arrival'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
-
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-2">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
-_END;
-						}
-					?>
-				</div>
-			</div>
-		</div>
-		
-		<!------ Promotion ------->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-6">
-					<img src="images/discount-banner.png">
-				</div>
-				<div class="col-sm-6">
-					<a href="collection-sale.php"><img src="images/sale-banner.png"></a>
-				</div>
-			</div>
-		</div>
-		
+		<h4 style="font-size: 20px;">REFERENCES</h4>
+		<p style="text-align: center;"><a href="https://us.shein.com/">SHEIN</a></p>
+		<p style="text-align: center;"><a href="https://www.urbanoutfitters.com/">Urban Outfitters</a></p>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 		<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">

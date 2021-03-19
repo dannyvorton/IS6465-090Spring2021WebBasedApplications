@@ -1,45 +1,3 @@
-<?php
-
-require_once 'login-page.php';
-
-$conn = new mysqli ($hn, $un, $pw, $db);
-if($conn->connect_error) die($conn->connect_error);
-
-$query = "SELECT * from inventory where category = 'dress'";
-
-$result = $conn->query($query);
-if(!$result) die ($conn->error);
-
-$rows = $result->num_rows;
-
-for ($j=0; $j<$rows; ++$j) {
-//    $result->data_seek($j);
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-
-echo <<<_END
-<pre>
-	SKU: $row[inv_id]
-    Product Name: $row[prod_name]
-    Quantity: $row[quantity]
-    Price: $row[price]
-    Category: $row[category]
-    Images: $row[images]
-</pre>
-
-    <form action='deleterecord.php' method='post'>
-        <input type='hidden' name='delete' value='yes'>
-        <input type='hidden' name='inv_id' value='$row[inv_id]'>
-        <input type='submit' value='DELETE RECORD'>
-    </form>
-
-_END;
-}
-
-$conn->close();
-
-?>
-
-<!-- code from mid-term assignment
 <html>
     <head>
 		<title>Suburban Outfitters | SHOP DRESSES</title>
@@ -51,6 +9,7 @@ $conn->close();
 	
 	<body id="collection-dress">
 	
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -95,6 +54,7 @@ $conn->close();
 			</div> 
 		</nav>
 		
+		<!------ Categories -------->
 		<div class="container-fluid">
 			<div class="categories">
 				<div class="small-container">
@@ -116,89 +76,43 @@ $conn->close();
 			</div>
 		</div>
 		
+		<!------ DRESSES ----->
 		<div class="container-fluid">
 			<div class="small-container-fluid">
 				<h2 class="title">SHOP DRESSES</h2>
 				<div class="row">
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-lace-dress1.png"></a>
-						<h4>White Lace Dress</h4>
-						<p>$55.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/fringe-dress1.png"></a>
-						<h4>Fringe Hem Dress</h4>
-						<p>$35.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/wrap-dress1.png"></a>
-						<h4>Floral Wrap Dress</h4>
-						<p>$45.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/floral-squareneck-dress1.png"></a>
-						<h4>Floral Square Neck Dress</h4>
-						<p>$55.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/blue-sleeveless-dress1.png"></a>
-						<h4>Blue Sleeveless Open Back Dress</h4>
-						<p>$30.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/puff-pink-dress1.png"></a>
-						<h4>Puff Sleeves Pink Dress</h4>
-						<p>$35.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/blue-pattern-dress1.png"></a>
-						<h4>Blue Pattern Tweed Dress</h4>
-						<p>$55.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/poka-dot-white-dress1.png"></a>
-						<h4>Swiss Dot White Dress</h4>
-						<p>$55.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/allover-floral-dress1.png"></a>
-						<h4>Open Back Floral Dress</h4>
-						<p>$45.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/offshoulder-dress1.png"></a>
-						<h4>Offshoulder Blue & White Dress</h4>
-						<p>$35.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/black-bodycon-dress1.png"></a>
-						<h4>Black Bodycon Dress</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-dress1.png"></a>
-						<h4>White Lantern Sleeves Dress</h4>
-						<p>$40.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/black-sheer-dress1.png"></a>
-						<h4>Black Sheer Dress</h4>
-						<p>$50.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/floral-jumpsuit1.png"></a>
-						<h4>Floral Jumpsuit</h4>
-						<p>$35.00</p>
-					</div>
-					<div class="col-sm-4">
-						<a href="#"><img src="images/white-floral-dress1.png"></a>
-						<h4>White Floral Dress</h4>
-						<p>$25.00</p>
-					</div>
+					<?php
+						require_once 'login.php';
+						
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+						
+						$query = "SELECT * FROM product WHERE prodType = 'Dress'";
+						
+						$result = $conn->query($query);
+						if(!$result) die($conn->error);
+						
+						$rows = $result->num_rows;
+
+						for($j = 0; $j < $rows; $j++)
+						{
+							$row = $result -> fetch_array(MYSQLI_ASSOC);
+						
+echo <<<_END
+							<div class="col-sm-4">
+								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
+								<h4>$row[prodName]</h4>
+								<p>$$row[price]</p>
+							</div>
+_END;
+						}
+						$conn->close();
+					?>
 				</div>
 			</div>
 		</div>
 		
+		<!------ Promotion ------->
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-6">
@@ -210,6 +124,7 @@ $conn->close();
 			</div>
 		</div>
 		
+		<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">
@@ -239,4 +154,3 @@ $conn->close();
 		</div>
 	</body>
 </html>
--->

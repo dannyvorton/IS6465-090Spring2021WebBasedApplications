@@ -1,13 +1,13 @@
 <html>
 	<head>
-		<title>Suburban Outfitters</title>
+		<title>Suburban Outfitters Cart</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="home-page">
+	<body id="vendors">
 	
 	<!------- Nav Bar ----------->
 		<nav>
@@ -53,115 +53,54 @@
 				</form> 
 			</div> 
 		</nav>
+		
+		<div class="tab">
+			<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
+			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
+			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
+			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
+			<button class="tablinks"><a href="#" style="color: white;">Customers</a></button>
+		</div>
+		
+		<!-------- Vendor Table Details ------->
+		<div class="small-container cart-page">
+			<table>
+				<tr>
+					<th>Vendor Name</th>
+					<th>Vendor Address</th>
+				</tr>
+				<?php
+						require_once 'login.php';
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
 	
-		<!-------- Collage Image --------->
-		<div class="container-fluid">
-			<img src="images/header-collage.png" alt="frontpage-img" style="width: 100%;">
-		</div>
-		
-		<!------ Categories -------->
-		<div class="container-fluid">
-			<div class="categories">
-				<div class="small-container">
-					<div class="row">
-						<div class="col-sm-3">
-							<h2 class="categories-name">DRESSES</h2>
-							<a href="collection-dress.php"><img src="images/floral-dress1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">TOPS</h2>
-							<a href="collection-top.php"><img src="images/blue-collar-top1.png"></a>
-						</div>
-						<div class="col-sm-3">
-							<h2 class="categories-name">BOTTOMS</h2>
-							<a href="collection-bottom.php"><img src="images/pattern-skirt1.png"></a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<!------ Featured Products ----->
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">FEATURED PRODUCTS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'Featured'";
-						
-						$result = $conn->query($query);
+						$query = "SELECT * FROM vendor";
+	
+						$result = $conn->query($query); 
 						if(!$result) die($conn->error);
-						
+
 						$rows = $result->num_rows;
 
-						for($j = 0; $j < $rows; $j++)
+						for($j=0; $j<$rows; $j++)
 						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-4">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
-_END;
-						}
-					?>
-				</div>
-			</div>
-		</div>
-		
-		<!------ New Arrivals ------>
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">NEW ARRIVALS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'New Arrival'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
+							$row = $result->fetch_array(MYSQLI_ASSOC);
+									
 
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
 echo <<<_END
-							<div class="col-sm-2">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
+							<tr>
+								<td>$row[vendorName]</td>
+								<td>$row[vendor_address]</td>
+							</tr>
+								
 _END;
 						}
-					?>
-				</div>
-			</div>
+						
+						$conn->close();
+				?>
+				
+			</table>
 		</div>
-		
-		<!------ Promotion ------->
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-6">
-					<img src="images/discount-banner.png">
-				</div>
-				<div class="col-sm-6">
-					<a href="collection-sale.php"><img src="images/sale-banner.png"></a>
-				</div>
-			</div>
-		</div>
+		<a href="vendor-add.php" class="btn" style="margin-left: 45%; width: 150px; margin-top: 10px;">Add Vendor</a>
 		
 		<!------- Footer --------->
 		<div class="footer">
@@ -192,4 +131,4 @@ _END;
 			</div>
 		</div>
 	</body>
-</html>
+</head>

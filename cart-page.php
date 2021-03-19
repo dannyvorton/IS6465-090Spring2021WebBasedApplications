@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+require_once 'login.php';
+
+?>
 <html>
 	<head>
 		<title>Suburban Outfitters Cart</title>
@@ -56,138 +62,80 @@
 		
 		<!-------- Cart Items Details ------->
 		<div class="small-container cart-page">
+			<h2>Shopping Cart</h2>
 			<table>
 				<tr>
 					<th>Product</th>
 					<th>Quantity</th>
 					<th>Subtotal</th>
 				</tr>
-				<tr>
-					<td>
-						<div class="cart-info">
-							<img src="images/strawberry-shorts1.png">
-							<div class="item-info">
-								<p>Strawberry Shorts</p>
-								<small>
-									<select>
-										<option>Small</option>
-										<option>Medium</option>
-										<option>Large</option>
-										<option>X-Large</option>
-										<option>XX-Large</option>
-									</select>
-								</small>
-								<a href="#">Remove</a>
-							</div>
-						</div>
-					</td>
-					<td><input type="number" value="1"></td>
-					<td>$25.00</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="cart-info">
-							<img src="images/white-cardigan1.png">
-							<div class="item-info">
-								<p>White Crop Cardigan</p>
-								<small>
-									<select style="margin-left: -20px;">
-										<option>Small</option>
-										<option>Medium</option>
-										<option>Large</option>
-										<option>X-Large</option>
-										<option>XX-Large</option>
-									</select>
-								</small>
-								<a href="#">Remove</a>
-							</div>
-						</div>
-					</td>
-					<td><input type="number" value="1"></td>
-					<td>$20.00</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="cart-info">
-							<img src="images/white-lace-dress1.png">
-							<div class="item-info">
-								<p>White Lace Dress</p>
-								<small>
-									<select>
-										<option>Small</option>
-										<option>Medium</option>
-										<option>Large</option>
-										<option>X-Large</option>
-										<option>XX-Large</option>
-									</select>
-								</small>
-								<a href="#">Remove</a>
-							</div>
-						</div>
-					</td>
-					<td><input type="number" value="1"></td>
-					<td>$55.00</td>
-				</tr>
+				<?php
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+
+						if(isset($_GET['prodID'])) {
+	
+							$prodID = $_GET['prodID'];
+	
+							$query = "SELECT * FROM product WHERE prodID=$prodID ";
+	
+							$result = $conn->query($query); 
+							if(!$result) die($conn->error);
+
+							$rows = $result->num_rows;
+	
+							for($j=0; $j<$rows; $j++)
+							{
+								$row = $result->fetch_array(MYSQLI_ASSOC);
+									
+
+echo <<<_END
+									<tr>
+										<td>
+											<div class="cart-info">
+												<img src="$row[imagepath1]">
+												<div class="item-info">
+													<p>$row[prodName]</p>
+													<small>
+														<select>
+															<option>Small</option>
+															<option>Medium</option>
+															<option>Large</option>
+															<option>X-Large</option>
+															<option>XX-Large</option>
+														</select>
+													</small>
+													<a href="#">Remove</a>
+												</div>
+											</div>
+										</td>
+										<td><input type="number" value="1"></td>
+										<td>$$row[price]</td>
+									</tr>
+								</table>
+								<div class="total-price">
+									<table>
+										<tr>
+											<td style="font-weight: bold;">Subtotal:</td>
+											<td>$$row[price]</td>
+										</tr>
+										<tr>
+											<td style="font-weight: bold;">Total:</td>
+											<td>$$row[price]</td>
+										</tr>
+									</table>
+								</div>
+								<div class="check-out-btn">
+									<a href="checkout-page.php" class="btn" style="margin-left: 70.5%; width: 30%; margin-top: 10px;">Check-Out</a>
+								</div>
+_END;
+							}
+						}
+						$conn->close();
+				?>
 			</table>
-			<div class="total-price">
-				<table>
-					<tr>
-						<td style="font-weight: bold;">Subtotal:</td>
-						<td>$100.00</td>
-					</tr>
-					<tr>
-						<td style="font-weight: bold;">Tax:</td>
-						<td>$3.25</td>
-					</tr>
-					<tr>
-						<td style="font-weight: bold;">Total:</td>
-						<td>$103.25</td>
-					</tr>
-				</table>
-			</div>
-			<div class="check-out-btn">
-				<a href="#" class="btn" style="margin-left: 70.5%; width: 30%; margin-top: 10px;">Check-Out</a>
-			</div>
 		</div>
 		
-		<!------ For You ------>
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">RECOMMENDED FOR YOU</h2>
-				<div class="row">
-					<div class="col-sm-2">
-						<a href="#"><img src="images/brown-chain-skirt1.png"></a>
-						<h4>Brown Chains Skater Skirt</h4>
-						<p>$30.00</p>
-					</div>
-					<div class="col-sm-2">
-						<a href="#"><img src="images/purple-shorts1.png"></a>
-						<h4>Purple Shorts</h4>
-						<p>$25.00</p>
-					</div>
-					<div class="col-sm-2">
-						<a href="#"><img src="images/white-lace-dress1.png"></a>
-						<h4>White Lace Dress</h4>
-						<p>$55.00</p>
-					</div>
-					<div class="col-sm-2">
-						<a href="#"><img src="images/poka-dot-white-dress1.png"></a>
-						<h4>Swiss Dot White Dress</h4>
-						<p>$55.00</p>
-					</div>
-					<div class="col-sm-2">
-						<a href="#"><img src="images/truck-tshirt1.png"></a>
-						<h4>Truck Print Oversized T-Shirt</h4>
-						<p>$15.00</p>
-					</div>
-					<div class="col-sm-2">
-						<a href="#"><img src="images/black-white-jeans1.png"></a>
-						<h4>Black & White Jeans</h4>
-						<p>$45.00</p>
-					</div>
-				</div>
-			</div>
-		</div>
 		
 		<!------- Footer --------->
 		<div class="footer">

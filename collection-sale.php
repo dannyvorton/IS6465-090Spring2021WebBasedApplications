@@ -1,13 +1,13 @@
 <html>
-	<head>
-		<title>Suburban Outfitters</title>
+    <head>
+		<title>Suburban Outfitters | SHOP DRESSES</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="home-page">
+	<body id="collection-sale">
 	
 	<!------- Nav Bar ----------->
 		<nav>
@@ -53,21 +53,12 @@
 				</form> 
 			</div> 
 		</nav>
-	
-		<!-------- Collage Image --------->
-		<div class="container-fluid">
-			<img src="images/header-collage.png" alt="frontpage-img" style="width: 100%;">
-		</div>
 		
 		<!------ Categories -------->
 		<div class="container-fluid">
 			<div class="categories">
 				<div class="small-container">
 					<div class="row">
-						<div class="col-sm-3">
-							<h2 class="categories-name">DRESSES</h2>
-							<a href="collection-dress.php"><img src="images/floral-dress1.png"></a>
-						</div>
 						<div class="col-sm-3">
 							<h2 class="categories-name">TOPS</h2>
 							<a href="collection-top.php"><img src="images/blue-collar-top1.png"></a>
@@ -76,15 +67,19 @@
 							<h2 class="categories-name">BOTTOMS</h2>
 							<a href="collection-bottom.php"><img src="images/pattern-skirt1.png"></a>
 						</div>
+						<div class="col-sm-3">
+							<h2 class="categories-name">SHOP ALL</h2>
+							<a href="collection.php"><img src="images/shop-all.png"></a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		
-		<!------ Featured Products ----->
+		<!------ DRESSES ----->
 		<div class="container-fluid">
 			<div class="small-container-fluid">
-				<h2 class="title">FEATURED PRODUCTS</h2>
+				<h2 class="title">SHOP SALE</h2>
 				<div class="row">
 					<?php
 						require_once 'login.php';
@@ -92,7 +87,7 @@
 						$conn = new mysqli($hn, $un, $pw, $db);
 						if($conn->connect_error) die($conn->connect_error);
 						
-						$query = "SELECT * FROM product WHERE selection = 'Featured'";
+						$query = "SELECT * FROM product WHERE selection = 'Sale'";
 						
 						$result = $conn->query($query);
 						if(!$result) die($conn->error);
@@ -111,41 +106,7 @@ echo <<<_END
 							</div>
 _END;
 						}
-					?>
-				</div>
-			</div>
-		</div>
-		
-		<!------ New Arrivals ------>
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">NEW ARRIVALS</h2>
-				<div class="row">
-					<?php
-						require_once 'login.php';
-						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
-						
-						$query = "SELECT * FROM product WHERE selection = 'New Arrival'";
-						
-						$result = $conn->query($query);
-						if(!$result) die($conn->error);
-						
-						$rows = $result->num_rows;
-
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-2">
-								<a href="product-details.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								<p>$$row[price]</p>
-							</div>
-_END;
-						}
+						$conn->close();
 					?>
 				</div>
 			</div>
