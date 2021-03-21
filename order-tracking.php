@@ -9,7 +9,7 @@
 	
 	<body id="tracking-page">
 	
-		<!------- Nav Bar ----------->
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -85,9 +85,7 @@
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

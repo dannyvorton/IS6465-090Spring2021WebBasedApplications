@@ -1,15 +1,14 @@
 <html>
 	<head>
-		<title>Suburban Outfitters Login</title>
+		<title>Suburban Outfitters Vendor</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="login-page">
-	
-		<!------- Nav Bar ----------->
+	<body id="vendor-add">
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -54,106 +53,75 @@
 			</div> 
 		</nav>
 		
-		<!-------Sign In ---------->
-		<div class="login-page">
+		<div class="tab">
+			<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
+			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
+			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
+			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
+		</div>
+		
+		<div class="vendor">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-8">
+						<h2>New User</h2>
 						<div class="form-container">
-							<div class="form-btn">
-								<h4>Login</h4>
-							</div>
-							<form method='post' action='login-page.php'>
-								<input type="text" placeholder="Username" name="username">
-								<input type="password" placeholder="Password" name="password">
-								<input type='submit' value='Sign In' class='btn'>
-								<a href="signup-page.php" class="btn" type="submit" style="width: 100%; margin-top: 0px;">Register</a>
-								<a href="#" style="color: gray; text-decoration: underline;">Forgot Your Password?</a>
+							<form class ="input" method='post' action='user-add.php'>
+								First Name: <input type='text' name='first_name'><br>
+								Last Name: <input type='text' name='last_name'><br>
+								Username: <input type='text' name='username'><br>
+								Password: <input type='text' name='password'><br><br>
+								User Type (Role):
+										<select name='role' id='role'>
+											<option value='admin' $A>Administrator</option>
+											<option value='user' $B>Customer</option>
+										</select>
+								<br>
+								<input type='submit' class='btn' value='Add User' style="margin-left: 2%; width: 90%; margin-top: 25px;">
 							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 		<?php
 
+			$page_roles = array('admin');
 
 			require_once 'login.php';
-			require_once 'user.php';
-
+			require_once 'check-session.php';
 
 			$conn = new mysqli($hn, $un, $pw, $db);
-			if($conn->connect_error) die($conn->connect_error);
+			if ($conn->connect_error) die($conn->connect_error);
 
-			if (isset($_POST['username']) && isset($_POST['password'])) {
+			if(isset($_POST['username'])) {
 				
-				
-				$tmp_username = mysql_entities_fix_string($conn, $_POST['username']);
-				$tmp_password = mysql_entities_fix_string($conn, $_POST['password']);
-				
-				
-				
-				$query = "SELECT * FROM user WHERE username = '$tmp_username'";
-				
-				
-				$result = $conn->query($query); 
-				if(!$result) die($conn->error);
-				
-				$rows = $result->num_rows;
-				$passwordFromDB="";
-				for($j=0; $j<$rows; $j++)
-				{
-					$result->data_seek($j); 
-					$row = $result->fetch_array(MYSQLI_ASSOC);
-					$passwordFromDB = $row['password'];
-					$role = $row['role'];
-					$username = $row['username'];
-				}
-				
-				
-				if(password_verify($tmp_password,$passwordFromDB))
-				{
-					echo "successful login<br>";
+					$first_name = get_post($conn, 'first_name');
+					$last_name = get_post($conn, 'last_name');
+					$username = get_post($conn, 'username');
+					$password = get_post($conn, 'password');
+					$role = get_post($conn, 'role');
+					$token = password_hash($password, PASSWORD_DEFAULT);
 					
-					$user = new User($tmp_username);
-					
-					if($role == "admin")
-					{
-						session_start();
-						$_SESSION['user'] = $user;
+					$query = "INSERT INTO user (first_name, last_name, username, password, role) VALUES ".
+						"('$first_name','$last_name','$username', '$token','$role')";
 						
-						
-					header("Location: admin-page.php?username=$row[username]");
-					}
-					else
-					{
-						session_start();
-						$_SESSION['user'] = $user;
-						
-						header("Location: profile-page.php");
-					}
-				}
-				else
-				{
-					echo "login error<br>";
-				}	
+					$result=$conn->query($query);
+					if(!$result) echo "INSERT failed: $query <br>" .
+						$conn->error . "<br><br>";
+				
+					header("Location: customer-list.php");
 				
 			}
 
 			$conn->close();
 
+			function get_post($conn, $var) {
+			return $conn->real_escape_string($_POST[$var]);
 
-
-			function mysql_entities_fix_string($conn, $string){
-				return htmlentities(mysql_fix_string($conn, $string));	
-			}
-
-			function mysql_fix_string($conn, $string){
-				$string = stripslashes($string);
-				return $conn->real_escape_string($string);
-			}
-
-
+		}
 
 		?>
 		<br>
@@ -162,8 +130,7 @@
 		<br>
 		<br>
 		<br>
-	
-		<!------- Footer --------->
+			<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">
@@ -190,4 +157,4 @@
 			</div>
 		</div>
 	</body>
-</html>
+</head>

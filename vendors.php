@@ -59,7 +59,7 @@
 			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
 			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
 			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
-			<button class="tablinks"><a href="#" style="color: white;">Customers</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
 		</div>
 		
 		<!-------- Vendor Table Details ------->
@@ -88,7 +88,7 @@
 
 echo <<<_END
 							<tr>
-								<td>$row[vendorName]</td>
+								<td><a href='vendor-details.php?vendorID=$row[vendorID]' style='font-size: 17px;'>$row[vendorName]</a></td>
 								<td>$row[vendor_address]</td>
 							</tr>
 								
@@ -99,8 +99,11 @@ _END;
 				?>
 				
 			</table>
+			<a href="vendor-add.php" class="btn" style="margin-left: 45%; width: 150px;">Add Vendor</a>
 		</div>
-		<a href="vendor-add.php" class="btn" style="margin-left: 45%; width: 150px; margin-top: 10px;">Add Vendor</a>
+		<br>
+		<br>
+		<br>
 		
 		<!------- Footer --------->
 		<div class="footer">
@@ -113,9 +116,7 @@ _END;
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

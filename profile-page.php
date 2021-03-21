@@ -36,6 +36,7 @@
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="login-page.php">Sign In</a><br>
 						<a class="dropdown-item" href="signup-page.php">Register</a><br>
+						<a class="dropdown-item" href="logout.php">Sign Out</a><br>
 					</div>
 				</li>
 				<li>
@@ -61,6 +62,23 @@
 			<button class="tablinks"><a href="#" style="color: white;">Purchases</button>
 			<button class="tablinks"><a href="order-tracking.php" style="color: white;">Track My Order</a></button>
 		</div>
+		<?php
+		$page_roles = array('user');
+
+		require_once 'login.php';
+		require_once 'check-session.php';
+
+		$conn = new mysqli($hn, $un, $pw, $db);
+		if ($conn->connect_error) die($conn->connect_error);
+		
+
+		$conn->close();
+
+		function get_post($conn, $var) {
+		return $conn->real_escape_string($_POST[$var]);
+		}
+
+		?>
 		<div class="profile-page">
 			<div class="container-fluid">
 				<h2 style="margin-right: 79%; margin-bottom: -25px;">Profile Information</h2>
@@ -68,7 +86,7 @@
 					<div class="col-md-4">
 						<div class="form-container profile">
 							<img src="images/picture-icon.png">
-							<h2>Amelia Le</h2>
+							<h2>Quentin Taratino</h2>
 							<h4>Customer</h4>
 							<p>Female</p>
 							<p>Joined 02/28/2021</p>
@@ -139,9 +157,7 @@
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

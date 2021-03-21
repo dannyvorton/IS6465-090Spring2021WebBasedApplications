@@ -54,133 +54,64 @@
 			</div> 
 		</nav>
 
-<!-- view campaign -->
+		<div class="tab">
+			<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
+			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
+			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
+			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
+		</div>
+		<br>
+		<br>
+		<!-----Campaign List--------->
+		<div class="small-container cart-page">
+			<table>
+				<tr>
+					<th>Campaign #</th>
+					<th>Campaign Name</th>
+					<th>Discount</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+				</tr>
+				<?php
+						require_once 'login.php';
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+	
+						$query = "SELECT * FROM campaign";
+	
+						$result = $conn->query($query); 
+						if(!$result) die($conn->error);
 
-	<div class="tab">
-		<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
-		<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
-		<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
-		<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
-		<button class="tablinks"><a href="#" style="color: white;">Customers</a></button>
-	</div>
-	<br>
-	<br>
+						$rows = $result->num_rows;
 
-<?php
-
-require_once 'login.php';
-
-$conn = new mysqli ($hn, $un, $pw, $db);
-if($conn->connect_error) die($conn->connect_error);
-
-$query = "SELECT * from campaign where end_date >= current_date";
-
-$result = $conn->query($query);
-if(!$result) die ($conn->error);
-
-$rows = $result->num_rows;
-
-for ($j=0; $j<$rows; ++$j) {
-//    $result->data_seek($j);
-    $row = $result->fetch_array(MYSQLI_ASSOC);
+						for($j=0; $j<$rows; $j++)
+						{
+							$row = $result->fetch_array(MYSQLI_ASSOC);
+									
 
 echo <<<_END
-
-    Product ID: $row[product_id]
-    Discount: $row[discount]
-    Details: $row[details]
-    Start Date: $row[start_date]
-    End Date: $row[end_date]
-
-    <form action='campaign.php' method='post'>
-        <input type='hidden' name='delete' value='yes'>
-        <input type='hidden' name='product_id' value='$row[product_id]'>
-        <input type='submit' value='Delete Campaign'>
-    </form>
+							<tr>
+								<td>$row[campID]</td>
+								<td><a href='campaign-details.php?campID=$row[campID]' style='font-size: 17px;'>$row[details]</a></td>
+								<td>$row[discount]%</td>
+								<td>$row[start_date]</td>
+								<td>$row[end_date]</td>
+							</tr>
+								
 _END;
-}
-
-$conn->close();
-
-?>
-
-<!-- delete campaign -->
-
-<?php
-
-require_once 'login.php';
-
-$conn = new mysqli ($hn, $un, $pw, $db);
-if($conn->connect_error) die($conn->connect_error);
-
-if (isset($_POST['delete'])) {
-    
-    $product_id = $_POST['product_id'];
-    $query = "DELETE from campaign where product_id='$product_id'";
-
-    $result = $conn->query($query);
-    if(!$result) die ($conn->error);
-
-    header("Location: campaign.php");
-}
-
-$conn->close();
-
-?>
-
-<!-- add campaign -->
-
-	<div class="campaign">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-8">
-					<h2>New Campaign</h2>
-					<div class="form-container">
-						<form method='post' action='campaign.php'>
-							Product ID: <input type='text' name='product_id'><br>
-							Discount: <input type='text' name='discount'><br>
-							Details: <input type='text' name='details'><br>
-							Start Date: <input type='date' name='start_date'><br>
-							End Date: <input type='date' name='end_date'><br>
-							<br>
-							<a href="checkout-page.php" class="btn" style="margin-left: 2%; width: 90%; margin-top: 10px;">Start Campaign</a>
-						</form>
-					</div>
-				</div>
-			</div>
+						}
+						
+						$conn->close();
+				?>
+				
+			</table>
+			<a href="campaign-add.php" class="btn" style="margin-left: 45%; width: 150px;">Add Campaign</a>
 		</div>
-	</div>
+		<br>
+		<br>
+		<br>
 
-<!-- update database -->
-
-<?php
-
-require_once 'login.php';
-
-$conn = new mysqli ($hn, $un, $pw, $db);
-if($conn->connect_error) die($conn->connect_error);
-if(isset($_POST['product_id'])) {
-    $product_id = $_POST['product_id'];
-    $discount = $_POST['discount'];
-    $details = $_POST['details'];
-    $start_date = $_POST['start_date'];
-    $end_date = $_POST['end_date'];
-
-    $query = "INSERT into campaign (product_id, discount, details, start_date, end_date) values ('$product_id', '$discount', '$details', '$start_date', '$end_date')";
-
-    $conn->query($query);
-    if(!result) die ($conn->error);
-    header("Location: campaign.php");
-}
-
-$conn->close();
-
-?>
-<br>
-<br>
-<br>
-<br>
-<br>
 		<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
@@ -192,9 +123,7 @@ $conn->close();
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

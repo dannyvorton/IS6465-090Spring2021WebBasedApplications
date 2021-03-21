@@ -1,15 +1,15 @@
 <html>
 	<head>
-		<title>Suburban Outfitters Login</title>
+		<title>Suburban Outfitters</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="login-page">
+	<body id="home-page">
 	
-		<!------- Nav Bar ----------->
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -36,6 +36,7 @@
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="login-page.php">Sign In</a><br>
 						<a class="dropdown-item" href="signup-page.php">Register</a><br>
+						<a class="dropdown-item" href="logout.php">Sign Out</a><br>
 					</div>
 				</li>
 				<li>
@@ -54,116 +55,67 @@
 			</div> 
 		</nav>
 		
-		<!-------Sign In ---------->
-		<div class="login-page">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-8">
-						<div class="form-container">
-							<div class="form-btn">
-								<h4>Login</h4>
-							</div>
-							<form method='post' action='login-page.php'>
-								<input type="text" placeholder="Username" name="username">
-								<input type="password" placeholder="Password" name="password">
-								<input type='submit' value='Sign In' class='btn'>
-								<a href="signup-page.php" class="btn" type="submit" style="width: 100%; margin-top: 0px;">Register</a>
-								<a href="#" style="color: gray; text-decoration: underline;">Forgot Your Password?</a>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
+		<!------- Admin Page --------->
+		
+		<div class="tab">
+			<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
+			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
+			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
+			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
 		</div>
+		<div class="small-container cart-page">
+			<table>
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Username</th>
+					<th>Role</th>
+				</tr>
 		<?php
+		$page_roles = array('admin');
+
+		require_once 'login.php';
+		require_once 'check-session.php';
+
+		$conn = new mysqli($hn, $un, $pw, $db);
+		if ($conn->connect_error) die($conn->connect_error);
 
 
-			require_once 'login.php';
-			require_once 'user.php';
+		//$query="SELECT * FROM user ORDER BY emp_id";
 
+		$query="SELECT * FROM user";
+		$result=$conn->query($query);
+		if(!$result) die ($conn->error);
 
-			$conn = new mysqli($hn, $un, $pw, $db);
-			if($conn->connect_error) die($conn->connect_error);
+		$rows=$result->num_rows;
+		for($j=0; $j<$rows; $j++) {
+			$result->data_seek($j);
+			$row=$result->fetch_array(MYSQLI_BOTH);
+			
+echo <<<_END
+			<tr>
+				<td>$row[first_name]</td>
+				<td>$row[last_name]</td>
+				<td><a href='user-detail.php?username=$row[username]'>$row[username]</a></td>
+				<td>$row[role]</td>
+			</tr>
+_END;
+		}
 
-			if (isset($_POST['username']) && isset($_POST['password'])) {
-				
-				
-				$tmp_username = mysql_entities_fix_string($conn, $_POST['username']);
-				$tmp_password = mysql_entities_fix_string($conn, $_POST['password']);
-				
-				
-				
-				$query = "SELECT * FROM user WHERE username = '$tmp_username'";
-				
-				
-				$result = $conn->query($query); 
-				if(!$result) die($conn->error);
-				
-				$rows = $result->num_rows;
-				$passwordFromDB="";
-				for($j=0; $j<$rows; $j++)
-				{
-					$result->data_seek($j); 
-					$row = $result->fetch_array(MYSQLI_ASSOC);
-					$passwordFromDB = $row['password'];
-					$role = $row['role'];
-					$username = $row['username'];
-				}
-				
-				
-				if(password_verify($tmp_password,$passwordFromDB))
-				{
-					echo "successful login<br>";
-					
-					$user = new User($tmp_username);
-					
-					if($role == "admin")
-					{
-						session_start();
-						$_SESSION['user'] = $user;
-						
-						
-					header("Location: admin-page.php?username=$row[username]");
-					}
-					else
-					{
-						session_start();
-						$_SESSION['user'] = $user;
-						
-						header("Location: profile-page.php");
-					}
-				}
-				else
-				{
-					echo "login error<br>";
-				}	
-				
-			}
+		$result->close();
+		$conn->close();
 
-			$conn->close();
-
-
-
-			function mysql_entities_fix_string($conn, $string){
-				return htmlentities(mysql_fix_string($conn, $string));	
-			}
-
-			function mysql_fix_string($conn, $string){
-				$string = stripslashes($string);
-				return $conn->real_escape_string($string);
-			}
-
-
+		function get_post($conn, $var) {
+		return $conn->real_escape_string($_POST[$var]);
+		}
 
 		?>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-	
-		<!------- Footer --------->
+			</table>
+			<a href="user-add.php" class="btn" style="margin-left: 40%; width: 150px"> Add User</a>
+		</div>
+		
+				<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">

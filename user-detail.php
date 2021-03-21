@@ -1,13 +1,13 @@
 <html>
 	<head>
-		<title>Suburban Outfitters Inventory</title>
+		<title>Suburban Outfitters</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="vendors">
+	<body id="update-user">
 	
 	<!------- Nav Bar ----------->
 		<nav>
@@ -53,7 +53,7 @@
 				</form> 
 			</div> 
 		</nav>
-		
+
 		<div class="tab">
 			<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
 			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
@@ -62,46 +62,101 @@
 			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
 		</div>
 		<br>
-		<br>
-		
-		<!-------- Inventory Details ------->
-		<div class="container-fluid">
-			<div class="small-container-fluid">
-				<h2 class="title">Inventory</h2>
-				<a href="inventory-add.php" class="btn" style="margin-left: 46%; width: 150px; margin-top: 10px;">Add Product</a>
+		<div class="campaign">
+			<div class="container-fluid">
 				<div class="row">
-					<?php
-						require_once 'login.php';
+					<div class="col-md-8">
+						<h2>User Information</h2>
+						<?php
+							$page_roles = array('admin');
+
+							require_once 'login.php';
+							require_once 'check-session.php';
+
+							$conn = new mysqli($hn, $un, $pw, $db);
+							if ($conn->connect_error) die($conn->connect_error);
+
+							if(isset($_GET['username'])){
+
+							$username = $_GET['username'];
+
+							$query = "SELECT * FROM user where username='$username'";
+
+							$result = $conn->query($query); 
+							if(!$result) die($conn->error);
+								
+							$rows = $result->num_rows;
+
+							for ($j = 0 ; $j < $rows ; ++$j)  {
+								
+								$row = $result->fetch_array(MYSQLI_ASSOC);
+								
+								$role = $row['role'];
+								$A=$B='';
+								if($role=='admin') $A = 'selected';
+								if($role=='user') $B = 'selected';
+			
+			
+			
+echo <<<_END
+			
+							<div class="form-container">
+								<form action='user-detail.php' method='post'>
+									First Name: <input type='text' name='first_name' value='$row[first_name]'>
+									Last Name: <input type='text' name='last_name' value='$row[last_name]'>
+									Username: <input type='text' name='username' value='$row[username]'> 
+									<br>
+									<br>
+									User Type (Role):
+										<select name='role' id='role'>
+											<option value='admin' $A>Administrator</option>
+											<option value='user' $B>Customer</option>
+										</select>
+										
+										<input type='hidden' name='update' value='yes'>
+										<input type='hidden' name='username' value='$row[username]'>
+										<input type='submit' class='btn' style='margin-top: 35px;' value='Update User'>
+								</form>
+							</div>
+							<div class="form-container">
+								<form action='user-delete.php' method='post'>
+									<input type='hidden' name='delete' value='yes'>
+									<input type='hidden' name='username' value='$row[username]'>
+									<input type='submit' class='btn' style='margin-top: -80px; width: 263px; margin-left: 0px;' value='Delete User'>	
+								</form>
+							</div>
+			
+_END;
+			
+						}  
+
+					}
+
+					if(isset($_POST['update'])){
 						
-						$conn = new mysqli($hn, $un, $pw, $db);
-						if($conn->connect_error) die($conn->connect_error);
+						$username = $_POST['username'];
+						$first_name = $_POST['first_name'];
+						$last_name = $_POST['last_name'];
+						$role = $_POST['role'];
+									
+							
+						$query = "UPDATE user SET first_name='$first_name', last_name='$last_name', role='$role' WHERE username='$username' ";
 						
-						$query = "SELECT * FROM product";
-						
-						$result = $conn->query($query);
+						$result = $conn->query($query); 
 						if(!$result) die($conn->error);
 						
-						$rows = $result->num_rows;
+						header("Location: customer-list.php");
+					}
+					 
+					$conn->close();	
 
-						for($j = 0; $j < $rows; $j++)
-						{
-							$row = $result -> fetch_array(MYSQLI_ASSOC);
-						
-echo <<<_END
-							<div class="col-sm-4">
-								<a href="inventory-detail.php?prodID=$row[prodID]"><img src="$row[imagepath1]"></a>
-								<h4>$row[prodName]</h4>
-								
-							</div>
-_END;
-						}
-						
 					?>
+					</div>
 				</div>
 			</div>
 		</div>
 		
-		<!------- Footer --------->
+	<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">

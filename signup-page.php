@@ -9,7 +9,7 @@
 	
 	<body id="signup-page">
 	
-		<!------- Nav Bar ----------->
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -63,19 +63,67 @@
 							<div class="form-btn">
 								<h4>Join Suburban Outfitters Squad</h4>
 							</div>
-							<form>
-								<input type="text" placeholder="Username">
-								<input type="text" placeholder="Email Address">
-								<input type="password" placeholder="Password">
-								<input type="password" placeholder="Confirm Password">
-								<a href="profile-page.php" class="btn" type="submit" style="width: 100%;">Register</a>
-								<a href="login-page.php" class="btn" type="submit" style="width: 100%; margin-top: 0px;">Already Sign Up? Sign In</a>
+							<form class="input" method='post' action='signup-page.php'>
+										<select name='role' id='role'>
+											<option value='user' $B>Customer</option>
+										</select>
+								<input type="text" placeholder="First Name" name='first_name'>
+								<input type="text" placeholder="Last Name" name='last_name'>
+								<input type="text" placeholder="Address" name='address'>
+								<input type="text" placeholder="Email" name='email'>
+								<input type="text" placeholder="Phone Number" name='phone_number'>
+								<input type="text" placeholder="Username" name='username'>
+								<input type="password" placeholder="Password" name='password'>
+								<input type='submit' class='btn' value='Register' style="margin-left: 0%; width: 100%; margin-top: 10px;">
+								<a href="login-page.php" class="btn" type="submit" style="width: 100%; height: 35px; margin-top: 0px;">Already Sign Up? Sign In</a>
 							</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<?php
+			require_once 'login.php';
+
+			$conn = new mysqli($hn, $un, $pw, $db);
+			if($conn->connect_error) die($conn->connect_error);
+
+			if(isset($_POST['first_name']))
+			{
+				$first_name =  $_POST['first_name'];
+				$last_name = $_POST['last_name'];
+				$address = $_POST['address'];
+				$email = $_POST['email'];
+				$phone_number = $_POST['phone_number'];
+				$username = $_POST['username'];
+				$password = $_POST['password'];
+				$role = $_POST['role'];
+				$token = password_hash($password, PASSWORD_DEFAULT);
+				
+				$query1 = "INSERT INTO user (first_name, last_name, username, password, role) VALUES ('$first_name', '$last_name', '$username', '$token', '$role')";
+				
+				$query2 = "INSERT INTO customer (first_name, last_name, email, phone_number, address, username, password, role) VALUES ('$first_name', '$last_name', '$email', '$phone_number', '$address', '$username', '$password', '$role')";
+				
+				$result1 = $conn->query($query1); 
+				if(!$result1) die($conn->error);
+				
+				$result2 = $conn->query($query2); 
+				if(!$result2) die($conn->error);
+				
+				header("Location: login-page.php");
+			}
+
+			$conn->close();
+
+		?>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
 	
 		<!------- Footer --------->
 		<div class="footer">
@@ -88,9 +136,7 @@
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

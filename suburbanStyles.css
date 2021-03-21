@@ -44,6 +44,11 @@ a {
 	 text-decoration: none;
 	 color: black;
  }
+ 
+ p{
+	 text-align: center;
+ }
+ 
  /* Nav Bar */
  
   nav{

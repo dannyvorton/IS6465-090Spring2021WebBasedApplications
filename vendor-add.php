@@ -58,10 +58,10 @@
 			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
 			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
 			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
-			<button class="tablinks"><a href="#" style="color: white;">Customers</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
 		</div>
 		
-		<div class="campaign">
+		<div class="vendor">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-8">
@@ -117,9 +117,7 @@
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

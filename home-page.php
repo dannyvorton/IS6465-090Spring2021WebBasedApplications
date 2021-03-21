@@ -34,8 +34,10 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="images/profile-logo.png" class="img-fluid" style="height: 30px; width: 30px; margin-top: -5px;"></a>
 					<div class="dropdown-menu">
+						<a class="dropdown-item" href="profile-page.php">Profile</a><br>
 						<a class="dropdown-item" href="login-page.php">Sign In</a><br>
 						<a class="dropdown-item" href="signup-page.php">Register</a><br>
+						<a class="dropdown-item" href="logout.php">Sign Out</a><br>
 					</div>
 				</li>
 				<li>
@@ -174,9 +176,7 @@ _END;
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

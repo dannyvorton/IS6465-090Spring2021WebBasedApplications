@@ -36,6 +36,7 @@
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="login-page.php">Sign In</a><br>
 						<a class="dropdown-item" href="signup-page.php">Register</a><br>
+						<a class="dropdown-item" href="logout.php">Sign Out</a><br>
 					</div>
 				</li>
 				<li>
@@ -54,12 +55,43 @@
 			</div> 
 		</nav>
 		
+		<!------- Admin Page --------->
+		
 		<div class="tab">
 			<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
 			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
 			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
 			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
-			<button class="tablinks"><a href="#" style="color: white;">Customers</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
+		</div>
+		<?php
+		$page_roles = array('admin');
+
+		require_once 'login.php';
+		require_once 'check-session.php';
+
+		$conn = new mysqli($hn, $un, $pw, $db);
+		if ($conn->connect_error) die($conn->connect_error);
+
+		$conn->close();
+
+		function get_post($conn, $var) {
+		return $conn->real_escape_string($_POST[$var]);
+		}
+
+		?>
+		<div class="profile-page">
+			<div class="container-fluid">
+				<h2>Profile Information</h2>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-container profile">
+							<img src="images/picture-icon.png">
+							<h4>Admin</h4>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 		<!------- Footer --------->
@@ -73,9 +105,7 @@
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

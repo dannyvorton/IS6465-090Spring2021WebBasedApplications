@@ -58,7 +58,7 @@
 			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
 			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
 			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
-			<button class="tablinks"><a href="#" style="color: white;">Customers</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
 		</div>
 		<br>
 		<div class="inventory">
@@ -68,6 +68,7 @@
 						<h2>New Product</h2>
 						<div class="form-container">
 							<form class ="input" method='post' action='inventory-add.php'>
+								Product ID: <input type='text' name='prodID'>
 								Product Name: <input type='text' name='prodName'>
 								Product Price: <input type='text' name='price'>
 								Product Quantity: <input type='text' name='quantity'>
@@ -92,6 +93,7 @@
 
 			if(isset($_POST['prodName']))
 			{
+				$prodID =  $_POST['prodID'];
 				$prodName = $_POST['prodName'];
 				$price = $_POST['price'];
 				$quantity = $_POST['quantity'];
@@ -102,8 +104,9 @@
 				$imagepath2 = $_POST['imagepath2'];
 				$imagepath3 = $_POST['imagepath3'];
 				
-				$query1 = "INSERT INTO product (prodName, price, prodType, imagepath1, imagepath2, imagepath3) VALUES ('$prodName', '$price', '$prodType', '$imagepath1', '$imagepath2', '$imagepath3')";
-				$query2 = "INSERT INTO inventory (quantity, date_ordered, cost, imagepath) VALUES ('$quantity', '$date_ordered', '$cost', '$imagepath1')";
+				$query1 = "INSERT INTO product (prodID, prodName, price, prodType, imagepath1, imagepath2, imagepath3) VALUES ('$prodID', '$prodName', '$price', '$prodType', '$imagepath1', '$imagepath2', '$imagepath3')";
+				
+				$query2 = "INSERT INTO inventory (prodID, quantity, date_ordered, cost, imagepath) VALUES ('$prodID', '$quantity', '$date_ordered', '$cost', '$imagepath1')";
 				
 				$result1 = $conn->query($query1); 
 				if(!$result1) die($conn->error);
@@ -136,6 +139,7 @@
 		<br>
 		<br>
 		<br>
+		<br>
 			<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
@@ -147,9 +151,7 @@
 					<div class="footer-col-1">
 						<h3>Help & Support</h3>
 						<ul>
-							<li><a href="#">Returns</a></li>
 							<li><a href="order-tracking.php">Track Order</a></li>
-							<li><a href="shipping-information.php">Shipping Information</a></li>
 							<li><a href="about-us.php">About Suburban Outfitters</a></li>
 							<li><a href="admin-page.php">Admin Page</a></li>
 						</ul>

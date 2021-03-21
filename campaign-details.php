@@ -1,15 +1,15 @@
 <html>
 	<head>
-		<title>Suburban Outfitters Login</title>
+		<title>Suburban Outfitters</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="suburbanStyles.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
 	</head>
 	
-	<body id="login-page">
+	<body id="campaign-details">
 	
-		<!------- Nav Bar ----------->
+	<!------- Nav Bar ----------->
 		<nav>
 			<div class="logo">
 				<a href="home-page.php"><img src="images/suburban outfitters logo.png" class="logo-image" style="height: 46px; width: 46px;">
@@ -53,117 +53,103 @@
 				</form> 
 			</div> 
 		</nav>
-		
-		<!-------Sign In ---------->
-		<div class="login-page">
+
+		<div class="tab">
+			<button class="tablinks"><a href="admin-page.php" style="color: white;">Profile</button>
+			<button class="tablinks"><a href="vendors.php" style="color: white;">Vendors</button>
+			<button class="tablinks"><a href="inventory.php" style="color: white;">Inventory</button>
+			<button class="tablinks"><a href="campaign.php" style="color: white;">Campaigns</a></button>
+			<button class="tablinks"><a href="customer-list.php" style="color: white;">Customers</a></button>
+		</div>
+		<br>
+		<div class="campaign">
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-8">
-						<div class="form-container">
-							<div class="form-btn">
-								<h4>Login</h4>
-							</div>
-							<form method='post' action='login-page.php'>
-								<input type="text" placeholder="Username" name="username">
-								<input type="password" placeholder="Password" name="password">
-								<input type='submit' value='Sign In' class='btn'>
-								<a href="signup-page.php" class="btn" type="submit" style="width: 100%; margin-top: 0px;">Register</a>
-								<a href="#" style="color: gray; text-decoration: underline;">Forgot Your Password?</a>
+						<h2>Campaign Information</h2>
+		<?php
+						require_once 'login.php';
+
+						$conn = new mysqli($hn, $un, $pw, $db);
+						if($conn->connect_error) die($conn->connect_error);
+
+						if(isset($_GET['campID'])) {
+	
+							$campID = $_GET['campID'];
+	
+							$query = "SELECT * FROM campaign WHERE campID=$campID";
+	
+							$result = $conn->query($query); 
+							if(!$result) die($conn->error);
+
+							$rows = $result->num_rows;
+	
+							for($j=0; $j<$rows; $j++)
+							{
+								$row = $result->fetch_array(MYSQLI_ASSOC);
+echo <<<_END
+
+						<div class="form-container" style="margin-top: 35px;">
+							<form method='post' action='campaign-details.php'>
+								Campaign #: <input type='text' name='campID' value='$row[campID]' style='font-size: 15px;'>
+								Campaign Name: <input type='text' name='details' value='$row[details]' style='font-size: 15px;'>
+								Discount: <input type='text' name='discount' value='$row[discount]' style='font-size: 15px;'>
+								Start Date: <input type='date' name='start_date' value='$row[start_date]' style='font-size: 15px;'>
+								End Date: <input type='date' name='end_date' value='$row[end_date]' style='font-size: 15px;'>
+								
+								<input type='hidden' name='update' value='yes'>
+								<input type='hidden' name='campID' value='$row[campID]'>
+								<input type='submit' class='btn' value='Update Campaign'>	
+									
+							</form>
+							
+						</div>
+						<div class="form-container" style="margin-top: 0px;">
+							<form action='campaign-delete.php' method='post'>
+								<input type='hidden' name='delete' value='yes'>
+								<input type='hidden' name='campID' value='$row[campID]'>
+								<input type='submit' class='btn' style='margin-top: 0px; width: 263px; margin-left: 0px;' value='Delete Campaign'>	
 							</form>
 						</div>
+		
+		
+_END;
+							}
+						}
+						if(isset($_POST['update']))
+						{
+							$campID = $_POST['campID'];
+							$details = $_POST['details'];
+							$discount = $_POST['discount'];
+							$start_date = $_POST['start_date'];
+							$end_date = $_POST['end_date'];
+							
+							
+							$query = "UPDATE campaign SET campID='$campID', details='$details', discount='$discount', start_date='$start_date', end_date='$end_date' WHERE campID=$campID";
+							
+							$result = $conn->query($query); 
+							if(!$result) die($conn->error);
+							
+							header("Location: campaign.php");
+							
+						}
+						
+						$conn->close();
+					?>
 					</div>
 				</div>
 			</div>
 		</div>
-		<?php
-
-
-			require_once 'login.php';
-			require_once 'user.php';
-
-
-			$conn = new mysqli($hn, $un, $pw, $db);
-			if($conn->connect_error) die($conn->connect_error);
-
-			if (isset($_POST['username']) && isset($_POST['password'])) {
-				
-				
-				$tmp_username = mysql_entities_fix_string($conn, $_POST['username']);
-				$tmp_password = mysql_entities_fix_string($conn, $_POST['password']);
-				
-				
-				
-				$query = "SELECT * FROM user WHERE username = '$tmp_username'";
-				
-				
-				$result = $conn->query($query); 
-				if(!$result) die($conn->error);
-				
-				$rows = $result->num_rows;
-				$passwordFromDB="";
-				for($j=0; $j<$rows; $j++)
-				{
-					$result->data_seek($j); 
-					$row = $result->fetch_array(MYSQLI_ASSOC);
-					$passwordFromDB = $row['password'];
-					$role = $row['role'];
-					$username = $row['username'];
-				}
-				
-				
-				if(password_verify($tmp_password,$passwordFromDB))
-				{
-					echo "successful login<br>";
-					
-					$user = new User($tmp_username);
-					
-					if($role == "admin")
-					{
-						session_start();
-						$_SESSION['user'] = $user;
-						
-						
-					header("Location: admin-page.php?username=$row[username]");
-					}
-					else
-					{
-						session_start();
-						$_SESSION['user'] = $user;
-						
-						header("Location: profile-page.php");
-					}
-				}
-				else
-				{
-					echo "login error<br>";
-				}	
-				
-			}
-
-			$conn->close();
-
-
-
-			function mysql_entities_fix_string($conn, $string){
-				return htmlentities(mysql_fix_string($conn, $string));	
-			}
-
-			function mysql_fix_string($conn, $string){
-				$string = stripslashes($string);
-				return $conn->real_escape_string($string);
-			}
-
-
-
-		?>
 		<br>
 		<br>
 		<br>
 		<br>
 		<br>
 		<br>
-	
-		<!------- Footer --------->
+		<br>
+		<br>
+		
+	<!------- Footer --------->
 		<div class="footer">
 			<div class="container-fluid">
 				<div class="row">
